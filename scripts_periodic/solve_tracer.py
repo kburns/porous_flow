@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 # Parameters
 Lx, Lz = (2., 1.)
 Nx, Nz = 512, 256
-D = 1e-4
+D = 1e-5
 initial_dt = 1e-3
 safety = 1.0
 stop_time = 10
@@ -58,17 +58,17 @@ logger.info('Solver built')
 # Initial conditions
 x, z = domain.grids()
 c = solver.state['c']
-x0 = 0
-sigma = 0.1
+x0 = 1
+sigma = 0.05
 c['g'] = np.exp(-((x-x0)**2) / (2*sigma**2))
 
 # Integration parameters
 solver.stop_sim_time = stop_time
-solver.stop_wall_time = 10*60
+solver.stop_wall_time = 60*60
 solver.stop_iteration = np.inf
 
 # Analysis
-snapshots = solver.evaluator.add_file_handler('snapshots_tracer', sim_dt=0.1, max_writes=50, mode='overwrite')
+snapshots = solver.evaluator.add_file_handler('snapshots_tracer', sim_dt=0.01, max_writes=50, mode='overwrite')
 snapshots.add_system(solver.state, scales=2)
 snapshots.add_task("u", scales=2)
 snapshots.add_task("w", scales=2)

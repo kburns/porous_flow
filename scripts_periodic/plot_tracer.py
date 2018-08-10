@@ -23,17 +23,17 @@ def main(filename, start, count, output):
 
     # Plot settings
     tasks = ['c']
-    scale = 4
+    scale = 2
     dpi = 100
     title_func = lambda sim_time: 't = {:.3f}'.format(sim_time)
     savename_func = lambda write: 'write_{:06}.png'.format(write)
     # Layout
     nrows, ncols = 1, 1
-    image = plot_tools.Box(2, 1)
+    image = plot_tools.Box(4, 2)
     pad = plot_tools.Frame(0.2, 0.2, 0.1, 0.1)
     margin = plot_tools.Frame(0.3, 0.2, 0.1, 0.1)
 
-    #clims = {'c':(-1,1)}
+    clims = {'c':(-1,1)}
 
     # Create multifigure
     mfig = plot_tools.MultiFigure(nrows, ncols, image, pad, margin, scale)
@@ -47,7 +47,7 @@ def main(filename, start, count, output):
                 axes = mfig.add_axes(i, j, [0, 0, 1, 1])
                 # Call 3D plotting helper, slicing in time
                 dset = file['tasks'][task]
-                plot_tools.plot_bot_3d(dset, 0, index, axes=axes, title=task, even_scale=True)
+                plot_tools.plot_bot_3d(dset, 0, index, axes=axes, title=task, clim=clims[task])
             # Add time title
             title = title_func(file['scales/sim_time'][index])
             title_height = 1 - 0.5 * mfig.margin.top / mfig.fig.y

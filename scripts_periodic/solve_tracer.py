@@ -22,10 +22,10 @@ logger = logging.getLogger(__name__)
 # Parameters
 Lx, Lz = (2., 1.)
 Nx, Nz = 512, 256
-D = 1e-5
+D = 1e-4
 initial_dt = 1e-3
 safety = 1.0
-stop_time = 10
+stop_time = 2
 
 # Create bases and domain
 x_basis = de.Fourier('x', Nx, interval=(0, Lx), dealias=3/2)
@@ -69,9 +69,7 @@ solver.stop_iteration = np.inf
 
 # Analysis
 snapshots = solver.evaluator.add_file_handler('snapshots_tracer', sim_dt=0.01, max_writes=50, mode='overwrite')
-snapshots.add_system(solver.state, scales=2)
-snapshots.add_task("u", scales=2)
-snapshots.add_task("w", scales=2)
+snapshots.add_system(solver.state)
 
 # CFL
 CFL = flow_tools.CFL(solver, initial_dt=initial_dt, cadence=10, safety=safety,
